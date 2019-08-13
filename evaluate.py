@@ -90,7 +90,18 @@ y_train = np.array(y_train)
 
 for i in range(len(x_train)):
     s = slice(i, i+1)
-    print(model.predict_classes(x_train[s]))
+    exp = expected[i]
+    score = model.predict(x_train[s])[0][0]
+    classif = model.predict_classes(x_train[s])[0][0]
+    acc = "Correct" if exp == classif else "Incorrect"
+    if acc == "Incorrect":
+        print("Actual:", str(exp),
+            ", Score:", str(score),
+            ", Class: ", str(classif),
+            " :: ", acc)
+    else:
+        print("...")
+
 
 
 
