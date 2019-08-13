@@ -27,27 +27,16 @@ dataset = shared.pre_process_data(data_file_root + '/aclimdb/train',
                                   number_of_files)
 # dataset = shared.pre_process_data(data_file_root + '/miniImdb/train')
 
-sentence_dataset = shared.sentences_split(dataset)
-
-
 vectorized_data = shared.tokenize_and_vectorize(dataset, word_vectors)
-vectorized_data_s = shared.tokenize_and_vectorize(sentence_dataset)
-
 expected = shared.collect_expected(dataset)
-expected_s = shared.collect_expected(sentence_dataset)
-
 split_point = int(len(vectorized_data) * .8)
-split_point_s = int(len(vectorized_data_s) * .8)
+
 
 x_train = vectorized_data[:split_point]
 y_train = expected[:split_point]
 x_test = vectorized_data[split_point:]
 y_test = expected[split_point:]
 
-# x_train = vectorized_data_s[:split_point_s]
-# y_train = expected_s[:split_point_s]
-# x_test = vectorized_data_s[split_point_s:]
-# y_test = expected_s[split_point_s:]
 
 maxlen = 400  # was 400 for reviews
 batch_size = 32

@@ -47,3 +47,38 @@ test_vec = np.reshape(test_vec_list, (len(test_vec_list),
                                       embedding_dims))
 model.predict(test_vec)
 model.predict_classes(test_vec)
+
+################## Sentences eval ###################3
+# Evaluate on *sentences* from the training data
+# Similar to what's done in model.py for evaluation, but
+# on sentences split from the training files
+word_vectors = get_data('w2v', limit=200000)
+data_file_root = '/Users/tonymullen/Dropbox/Northeastern/Classes/NLP/Datasets'
+# https://ai.stanford.edu/~amaas/data/sentiment/
+
+number_of_files = 5000
+
+dataset = shared.pre_process_data(data_file_root + '/aclimdb/train',
+                                  number_of_files)
+
+sentence_dataset = shared.sentences_split(dataset)
+vectorized_data_s = shared.tokenize_and_vectorize(sentence_dataset)
+expected_s = shared.collect_expected(sentence_dataset)
+split_point_s = int(len(vectorized_data_s) * .8)
+
+x_train = vectorized_data_s[:split_point_s]
+y_train = expected_s[:split_point_s]
+x_test = vectorized_data_s[split_point_s:]
+y_test = expected_s[split_point_s:]
+
+x_train = shared.pad_trunc(x_train, maxlen)
+x_test = shared.pad_trunc(x_test, maxlen)
+
+x_train = np.reshape(x_train, (len(x_train), maxlen, embedding_dims))
+y_train = np.array(y_train)
+x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
+y_test = np.array(y_test)
+
+
+model.predict(x_train[0])
+

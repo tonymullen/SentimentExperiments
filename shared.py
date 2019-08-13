@@ -14,7 +14,7 @@ import glob
 import os
 
 
-def pre_process_data(filepath, number_of_files, dataset):
+def pre_process_data(filepath, number_of_files):
     positive_path = os.path.join(filepath, 'pos')
     negative_path = os.path.join(filepath, 'neg')
     pos_label = 1
