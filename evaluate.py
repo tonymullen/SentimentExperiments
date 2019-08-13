@@ -85,8 +85,12 @@ y_train = np.array(y_train)
 #model.predict(x_train)
 #model.predict_classes(x_train)
 
+#s = slice(0, 1)
+#model.predict_classes(x_train[s])
+
 for i in range(len(x_train)):
-    model.predict_classes([x_train[i]])
+    s = slice(i, i+1)
+    print(model.predict_classes(x_train[s]))
 
 
 
