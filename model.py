@@ -93,8 +93,4 @@ with open("cnn_model.json", "w") as json_file:
     json_file.write(model_structure)
 model.save_weights("cnn_Weights.h5")
 
-# sent_results = model.predict_classes(x_test)
-# x_test_sents = sentence_dataset[split_point_s:]
-# for i in range(len(sent_results)):
-#     if (sent_results[i][0] == 1 and x_test_sents[i][0] == 1):
-#         print("Guessed",sent_results[i][0], ":>", x_test_sents[i])
+

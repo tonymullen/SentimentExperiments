@@ -7,16 +7,15 @@ With current settings, the model created should be as follows:
 
     Train on 8000 samples, validate on 2000 samples
     Epoch 1/5
-    2019-08-12 14:13:32.806079: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU     supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-    8000/8000 [==============================] - 316s 39ms/step - loss: 0.4778 - acc: 0.7556 -     val_loss: 0.3646 - val_acc: 0.8340
+    8000/8000 [==============================] - 327s 41ms/step - loss: 0.4954 - acc: 0.7474 - val_loss: 0.3467 - val_acc: 0.8565
     Epoch 2/5
-    8000/8000 [==============================] - 312s 39ms/step - loss: 0.2621 - acc: 0.8961 - val_loss: 0.3867 - val_acc: 0.8345
+    8000/8000 [==============================] - 334s 42ms/step - loss: 0.2794 - acc: 0.8841 - val_loss: 0.3062 - val_acc: 0.8705
     Epoch 3/5
-    8000/8000 [==============================] - 279s 35ms/step - loss: 0.1499 - acc: 0.9456 - val_loss: 0.3533 - val_acc: 0.8515
+    8000/8000 [==============================] - 339s 42ms/step - loss: 0.1517 - acc: 0.9486 - val_loss: 0.3239 - val_acc: 0.8705
     Epoch 4/5
-    8000/8000 [==============================] - 275s 34ms/step - loss: 0.0521 - acc: 0.9879 - val_loss: 0.4176 - val_acc: 0.8640
+    8000/8000 [==============================] - 399s 50ms/step - loss: 0.0552 - acc: 0.9861 - val_loss: 0.3728 - val_acc: 0.8665
     Epoch 5/5
-    8000/8000 [==============================] - 260s 33ms/step - loss: 0.0141 - acc: 0.9991 - val_loss: 0.4552 - val_acc: 0.8605
+    8000/8000 [==============================] - 308s 39ms/step - loss: 0.0166 - acc: 0.9988 - val_loss: 0.3962 - val_acc: 0.8740
 
 
-Running `evaluate.py` is intended to split the training data into sentences and evaluate the sentences according to the model. Still wrestling with getting this working.
+Running `evaluate.py` splits the training data into sentences and evaluate the sentences according to the model.
