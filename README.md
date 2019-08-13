@@ -1,7 +1,9 @@
 
-Sentiment experiments
+## Sentiment experiments
 
+Running `model.py` creates a model, evaluates it, and exports the parameters.
 
+With current settings, the model created should be as follows:
 
     Train on 8000 samples, validate on 2000 samples
     Epoch 1/5
@@ -15,3 +17,6 @@ Sentiment experiments
     8000/8000 [==============================] - 275s 34ms/step - loss: 0.0521 - acc: 0.9879 - val_loss: 0.4176 - val_acc: 0.8640
     Epoch 5/5
     8000/8000 [==============================] - 260s 33ms/step - loss: 0.0141 - acc: 0.9991 - val_loss: 0.4552 - val_acc: 0.8605
+
+
+Running `evaluate.py` is intended to split the training data into sentences and evaluate the sentences according to the model. Still wrestling with getting this working.

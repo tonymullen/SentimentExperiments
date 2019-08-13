@@ -17,6 +17,7 @@ from nlpia.loaders import get_data
 
 np.random.seed(1337)
 
+
 word_vectors = get_data('w2v', limit=200000)
 data_file_root = '/Users/tonymullen/Dropbox/Northeastern/Classes/NLP/Datasets'
 # https://ai.stanford.edu/~amaas/data/sentiment/

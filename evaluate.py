@@ -11,6 +11,7 @@ import shared
 from keras.models import model_from_json
 from nlpia.loaders import get_data
 
+np.random.seed(1337)
 
 maxlen = 400  # was 400 for reviews
 embedding_dims = 300  # was 300
@@ -62,23 +63,32 @@ dataset = shared.pre_process_data(data_file_root + '/aclimdb/train',
                                   number_of_files)
 
 sentence_dataset = shared.sentences_split(dataset)
-vectorized_data_s = shared.tokenize_and_vectorize(sentence_dataset)
+vectorized_data_s = shared.tokenize_and_vectorize(sentence_dataset,
+                                                  word_vectors)
 expected_s = shared.collect_expected(sentence_dataset)
 split_point_s = int(len(vectorized_data_s) * .8)
 
 x_train = vectorized_data_s[:split_point_s]
 y_train = expected_s[:split_point_s]
-x_test = vectorized_data_s[split_point_s:]
-y_test = expected_s[split_point_s:]
+#x_test = vectorized_data_s[split_point_s:]
+#y_test = expected_s[split_point_s:]
 
 x_train = shared.pad_trunc(x_train, maxlen)
-x_test = shared.pad_trunc(x_test, maxlen)
+#x_test = shared.pad_trunc(x_test, maxlen)
 
 x_train = np.reshape(x_train, (len(x_train), maxlen, embedding_dims))
 y_train = np.array(y_train)
-x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
-y_test = np.array(y_test)
+#x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
+#y_test = np.array(y_test)
 
 
-model.predict(x_train[0])
+#model.predict(x_train)
+#model.predict_classes(x_train)
+
+for i in range(len(x_train)):
+    model.predict_classes([x_train[i]])
+
+
+
+
 

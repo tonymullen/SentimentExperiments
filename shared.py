@@ -8,10 +8,12 @@ Created on Fri Jul  5 16:38:45 2019
 
 from nltk.tokenize import TreebankWordTokenizer
 from nltk import sent_tokenize
-from random import shuffle
 
+import random
 import glob
 import os
+
+shuffle_seed = 5150
 
 
 def pre_process_data(filepath, number_of_files):
@@ -33,7 +35,7 @@ def pre_process_data(filepath, number_of_files):
                 dataset.append((neg_label, f.read()))
             c += 1
 
-    shuffle(dataset)
+    random.Random(shuffle_seed).shuffle(dataset)
     return(dataset)
 
 
