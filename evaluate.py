@@ -62,10 +62,13 @@ number_of_files = 5000
 dataset = shared.pre_process_data(data_file_root + '/aclimdb/train',
                                   number_of_files)
 
-sentence_dataset = shared.sentences_split(dataset)
-vectorized_data_s = shared.tokenize_and_vectorize(sentence_dataset,
+print("Length of dataset:", len(dataset))
+dataset = shared.sentences_split(dataset)
+print("Length of dataset:", len(dataset))
+
+vectorized_data_s = shared.tokenize_and_vectorize(dataset,
                                                   word_vectors)
-expected_s = shared.collect_expected(sentence_dataset)
+expected_s = shared.collect_expected(dataset)
 split_point_s = int(len(vectorized_data_s) * .8)
 
 x_train = vectorized_data_s[:split_point_s]
@@ -88,19 +91,30 @@ y_train = np.array(y_train)
 #s = slice(0, 1)
 #model.predict_classes(x_train[s])
 
+
+# Currently this seems to be evaluating all sentences
+# accurately, which is probably wrong. Not sure what I've done wrong here.
+f = open("sentences.txt","w")
+
 for i in range(len(x_train)):
     s = slice(i, i+1)
-    exp = expected[i]
+    exp = y_train[i]
     score = model.predict(x_train[s])[0][0]
     classif = model.predict_classes(x_train[s])[0][0]
-    acc = "Correct" if exp == classif else "Incorrect"
-    if acc == "Incorrect":
-        print("Actual:", str(exp),
+    if exp == classif:
+        print(i)
+    else:
+        if exp < classif:
+            wrongness = score
+        elif exp > classif:
+            wrongness = 1 - score
+
+        print(i, "::", "Actual:", str(exp),
             ", Score:", str(score),
             ", Class: ", str(classif),
-            " :: ", acc)
-    else:
-        print("...")
+            " :: ", wrongness)
+        f.write(str(round(wrongness, 2)) + " \t " + dataset[i][1] + "\n")
+
 
 
 
