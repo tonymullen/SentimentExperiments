@@ -12,7 +12,6 @@ import shared
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation
 from keras.layers import Conv1D, GlobalMaxPooling1D
-
 from nlpia.loaders import get_data
 
 np.random.seed(1337)
@@ -69,7 +68,6 @@ model.add(Conv1D(
         input_shape=(maxlen, embedding_dims)))
 
 model.add(GlobalMaxPooling1D())
-
 model.add(Dense(hidden_dims))
 model.add(Dropout(0.2))
 model.add(Activation('relu'))

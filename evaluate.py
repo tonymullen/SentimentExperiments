@@ -6,16 +6,17 @@ Created on Fri Jul  5 16:38:45 2019
 @author: tonymullen
 """
 
+import os
 import numpy as np
 import shared
 from keras.models import model_from_json
-from nlpia.loaders import get_data
+from gensim.models import KeyedVectors
 
 np.random.seed(1337)
 
 maxlen = 400  # was 400 for reviews
 embedding_dims = 300  # was 300
-word_vectors = get_data('w2v', limit=200000)
+word_vectors = KeyedVectors.load_word2vec_format('word_vectors/GoogleNews-vectors-negative300.bin', binary=True, limit=200000)
 
 # Load model
 with open("cnn_model.json", "r") as json_file:
@@ -53,47 +54,28 @@ model.predict_classes(test_vec)
 # Evaluate on *sentences* from the training data
 # Similar to what's done in model.py for evaluation, but
 # on sentences split from the training files
-word_vectors = get_data('w2v', limit=200000)
-data_file_root = '/Users/tonymullen/Dropbox/Northeastern/Classes/NLP/Datasets'
 # https://ai.stanford.edu/~amaas/data/sentiment/
 
+data_file_root = os.getcwd() + '/data'
 number_of_files = 5000
+dataset = shared.pre_process_data(data_file_root + '/aclimdb/train', number_of_files)
 
-dataset = shared.pre_process_data(data_file_root + '/aclimdb/train',
-                                  number_of_files)
-
-print("Length of dataset:", len(dataset))
+print("Length of dataset pre-sentence split:", len(dataset))
 dataset = shared.sentences_split(dataset)
-print("Length of dataset:", len(dataset))
+print("Length of dataset post-sentence split:", len(dataset))
 
-vectorized_data_s = shared.tokenize_and_vectorize(dataset,
-                                                  word_vectors)
+vectorized_data_s = shared.tokenize_and_vectorize(dataset, word_vectors)
 expected_s = shared.collect_expected(dataset)
 split_point_s = int(len(vectorized_data_s) * .8)
 
+print('Starting x_train...')
 x_train = vectorized_data_s[:split_point_s]
 y_train = expected_s[:split_point_s]
-#x_test = vectorized_data_s[split_point_s:]
-#y_test = expected_s[split_point_s:]
-
 x_train = shared.pad_trunc(x_train, maxlen)
-#x_test = shared.pad_trunc(x_test, maxlen)
-
 x_train = np.reshape(x_train, (len(x_train), maxlen, embedding_dims))
 y_train = np.array(y_train)
-#x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
-#y_test = np.array(y_test)
 
-
-#model.predict(x_train)
-#model.predict_classes(x_train)
-
-#s = slice(0, 1)
-#model.predict_classes(x_train[s])
-
-
-# Currently this seems to be evaluating all sentences
-# accurately, which is probably wrong. Not sure what I've done wrong here.
+print('Printing predictions...')
 f = open("sentences.txt","w")
 
 for i in range(len(x_train)):
@@ -102,19 +84,20 @@ for i in range(len(x_train)):
     score = model.predict(x_train[s])[0][0]
     classif = model.predict_classes(x_train[s])[0][0]
     if exp == classif:
-        print(i)
+        x = 1
     else:
         if exp < classif:
             wrongness = score
         elif exp > classif:
             wrongness = 1 - score
 
-        print(i, "::", "Actual:", str(exp),
-            ", Score:", str(score),
-            ", Class: ", str(classif),
-            " :: ", wrongness)
-        f.write(str(round(wrongness, 2)) + " \t " + dataset[i][1] + "\n")
+    f.write(f'{i}: expected: {exp}, evaluated: {classif}, confidence: {score}, text: {dataset[i][1]}\n')
 
+    '''print(i, "::", "Actual:", str(exp),
+        ", Score:", str(score),
+        ", Class: ", str(classif),
+        " :: ", wrongness)'''
+    # f.write(str(round(wrongness, 2)) + " \t " + dataset[i][1] + "\n")
 
 
 

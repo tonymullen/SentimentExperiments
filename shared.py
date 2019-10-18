@@ -5,7 +5,6 @@ Created on Fri Jul  5 16:38:45 2019
 
 @author: tonymullen
 """
-
 from nltk.tokenize import TreebankWordTokenizer
 from nltk import sent_tokenize
 
@@ -37,7 +36,6 @@ def pre_process_data(filepath, number_of_files):
 
     random.Random(shuffle_seed).shuffle(dataset)
     return(dataset)
-
 
 def sentences_split(dataset):
     labeled_sents = []

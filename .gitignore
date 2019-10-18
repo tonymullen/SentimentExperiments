@@ -1,3 +1,4 @@
 /venv/*
+/data/*
+/word_vectors/*
 *.gz
-/aclImdb/*
