@@ -1,0 +1,12 @@
+0/no number:  Don't know, can't classify
+1   : Compares/contrasts with some other work
+    # examples:
+    I was in such high hopes of seeing an adaptation of a classic story like the Arabian Nights.
+    I appreciate good indie cinema, but this movie is not worthy of moviegoers' time.
+    I actually prefer the sequel to this film as I like the fact they brought Amy Yasbeck back as a different more likable character as there are one to many characters in this film that are thoroughly unlikable as it is.
+2   : Sarcasm. Exact opposite of meaning.
+3   : Subject matter sentiment. Score reflects subject matter rather than reviewer's opinion.
+    # examples:
+    In addition to the dramatization of historical events, the focus of the film is on the saving of a child from the Holocaust by a German and the result of the child's experience of losing her mother.
+
+

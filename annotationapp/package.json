@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "ip": "^1.1.5",
+    "request": "^2.85.0"
+  }
+}

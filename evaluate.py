@@ -92,9 +92,13 @@ y_train = np.array(y_train)
 #model.predict_classes(x_train[s])
 
 
-# Currently this seems to be evaluating all sentences
-# accurately, which is probably wrong. Not sure what I've done wrong here.
-f = open("sentences.txt","w")
+f = open("sentences_new.txt","w")
+r = open("training_sentence_results.txt", "w")
+
+tp = 0
+fp = 0
+tn = 0
+fn = 0
 
 for i in range(len(x_train)):
     s = slice(i, i+1)
@@ -103,18 +107,50 @@ for i in range(len(x_train)):
     classif = model.predict_classes(x_train[s])[0][0]
     if exp == classif:
         print(i)
+        if classif == 1:
+            tp += 1
+        else:
+            tn += 1
     else:
         if exp < classif:
+            fp += 1
             wrongness = score
         elif exp > classif:
+            fn += 1
             wrongness = 1 - score
 
         print(i, "::", "Actual:", str(exp),
             ", Score:", str(score),
             ", Class: ", str(classif),
             " :: ", wrongness)
-        f.write(str(round(wrongness, 2)) + " \t " + dataset[i][1] + "\n")
+        pref = "Expected: "+str(exp)+", Evaluated: "+str(classif)+", Wrongness:"+ str(round(wrongness, 2))
+        f.write(pref + " \t " + dataset[i][1] + "\n")
+        #f.write(str(round(wrongness, 2)) + " \t " + dataset[i][1] + "\n")
 
+if tp > 0 and fp > 0 and fn > 0 and fp > 0:
+    print("True positives: \t", tp)
+    print("False positives:\t", fp)
+    print("True negatives: \t", tp)
+    print("False negatives:\t", fp)
+    acc = (tp + tn)/(tp + tn + fp +fn)
+    rec = tp/(tp + fn)
+    prec = tp/(tp + fp)
+    f_score = (2 * rec * prec)/(rec + prec)
+
+    print("Accuracy: \t", str(round(acc,2)))
+    print("Recall:   \t", str(round(rec,2)))
+    print("Precision:\t", str(round(prec,2)))
+    print("F-score:  \t", str(round(f_score,2)))
+
+    r.write("True positives: \t"+str(tp)+"\n")
+    r.write("False positives:\t"+str(fp)+"\n")
+    r.write("True negatives: \t"+str(tn)+"\n")
+    r.write("False negatives:\t"+str(fn)+"\n")
+
+    r.write("Accuracy: \t"+str(round(acc,2))+"\n")
+    r.write("Recall:   \t"+str(round(rec,2))+"\n")
+    r.write("Precision:\t"+str(round(prec,2))+"\n")
+    r.write("F-score:  \t"+str(round(f_score,2))+"\n")
 
 
 

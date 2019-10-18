@@ -1,0 +1,4 @@
+True positives: 	2
+False positives:	2
+True negatives: 	4
+False negatives:	1

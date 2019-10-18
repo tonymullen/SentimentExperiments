@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <style>
+    .btn-group.special {display: flex;}
+    .special .btn { flex: 1; }
+  </style>
+</head>
+<body>
+<p>
+<div class="container top">
+  <div class="card" style="width: 100%;">
+    <div class="card-body">
+      <h5 class="card-title">You've annotated <span class="ind">0</span> sentences this session.</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Next sentence:</h6>
+      <p class="card-text text">
+      </p>
+    </div>
+  </div>
+</p>
+<p>
+    <div class="alert alert-danger" role="alert">
+    Warning: <span class="warning"></span>
+  </div>
+</p>
+The warning above is:
+  <p>
+  <div class="btn-group special" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-lg btn-success btn-secondary" id="helpful">
+      Helpful
+    </button>
+    <button type="button" class="btn btn-lg btn-danger btn-secondary" id="not-helpful">
+      Not helpful
+    </button>
+  </div>
+  </p>
+  <br>
+  <p>
+    <button type="button" class="btn btn-warning btn-lg btn-block" id="neither">Don't know/No preference</button>
+  </p>
+</container>
+</body>
+<script>
+//var server = 'http://10.0.0.205:8081'
+var PORT = 'PORT_DUMMY';
+var SERVER_ADDRESS = 'http://' + 'ADDRESS_DUMMY';
+var server = SERVER_ADDRESS+':'+PORT;
+var annotators = ['tony', 'bob', 'charlie'];
+var count = 0;
+var output = {};
+var name = '';
+
+function getSentence() {
+  output = {}
+  $.get(server+'/api', function(res, err){
+    output = JSON.parse(res);
+    $('p.text').text(output.sentence);
+    $('span.warning').text(output.warning);
+  });
+}
+
+function submitJudgment(judgment) {
+  output.judgment = judgment;
+  output.annotator = name;
+  count++;
+  $.post(server+'/api', output, function(){
+    $('span.ind').text(count);
+    getSentence();
+  });
+}
+
+$('document').ready(function(){
+  if (!localStorage.getItem("annotatorName")) {
+    name = window.prompt("Enter your username");
+    while (!annotators.includes(name)){
+      name = window.prompt("Enter your username");
+    }
+    localStorage.setItem("annotatorName", name);
+  } else {
+    name = localStorage.getItem("annotatorName");
+  };
+  getSentence();
+});
+
+$('#sarcasm').click(function(){
+  submitJudgment('SARC')
+})
+
+$('#subject_emotion').click(function(){
+  submitJudgment('SUBJ')
+})
+
+$('#comparison').click(function(){
+  submitJudgment('COMP')
+})
+
+$('#none').click(function(){
+  submitJudgment('NONE')
+})
+
+</script>
+</html>
